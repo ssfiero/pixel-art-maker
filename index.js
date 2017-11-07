@@ -55,11 +55,14 @@ for (let i = 0; i < 147; i++) {
 
 // Section for the clear button.
 let clearDiv = document.createElement('div');
-clearDiv.setAttribute("style", "height: 6%; padding: 5px");
-
+clearDiv.setAttribute("style", "height: 6%; padding: 5px; float: left; margin-right: 5px");
 clearDiv.innerText = "Reset Board:";
 
-clearSection.append(clearDiv);
+let clearDivButton = document.createElement('div');
+clearDivButton.setAttribute("style", "height: 3%; float: left; border: 2px solid grey; border-radius: 10px; padding: 7px 15px");
+clearDivButton.innerText = "Reset";
+
+clearSection.append(clearDiv, clearDivButton);
 body.appendChild(clearSection);
 
 
@@ -83,7 +86,7 @@ body.appendChild(colSelSection);
 
 
 
-// When color is selected from color pallet, update Color Selected with
+// When color is selected from color pallet, update Color Selected div with
 // color and name.
 function clickColor() {
   colorSelColor.style.backgroundColor = event.target.style.backgroundColor;
@@ -93,10 +96,29 @@ function clickColor() {
 rightSection.addEventListener('click', clickColor);
 
 
+
+// When pixel is selected on the board, update the selected pixel on the
+// board with the selected color.
+function paintBoard() {
+  if (event.target === leftSection) {
+    // No action if user clicks in between pixels.
+  } else {
+    event.target.style.backgroundColor = colorSelColor.style.backgroundColor;
+  }
+}
+
+leftSection.addEventListener('mouseenter', clickBoard);
+
+
+
 // When pixel is selected on the board, update the selected pixel on the
 // board with the selected color.
 function clickBoard() {
-  event.target.style.backgroundColor = colorSelColor.style.backgroundColor;
+  if (event.target === leftSection) {
+    // No action if user clicks in between pixels.
+  } else {
+    event.target.style.backgroundColor = colorSelColor.style.backgroundColor;
+  }
 }
 
 leftSection.addEventListener('click', clickBoard);
