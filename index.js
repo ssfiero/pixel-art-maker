@@ -8,8 +8,7 @@ let body = document.querySelector('body');
 let title = document.createElement('div');
 let leftSection = document.createElement('section');
 let rightSection = document.createElement('section');
-let colSelSection = document.createElement('section');
-let clearSection = document.createElement('section');
+let bottomSection = document.createElement('section');
 
 
 
@@ -18,8 +17,7 @@ title.setAttribute("style", "text-align: center; font-size: 50px; margin-bottom:
 body.setAttribute("style", "margin: 15px 50px; background-color: #161616");
 leftSection.setAttribute("style", "width: 70%; float: left; margin-right: 20px; border: 2px solid Gainsboro; border-radius: 5px; padding: 14px 10px 14px 14px; background-color: Gainsboro");
 rightSection.setAttribute("style", "width: 23%; float: left; margin-bottom: 20px; border: 2px solid #303030; border-radius: 5px; padding: 15px; background-color: #303030");
-clearSection.setAttribute("style", "width: 69.5%; float: left; margin-right: 20px; border: 2px solid #303030; border-radius: 5px; padding: 15px; background-color: #303030");
-colSelSection.setAttribute("style", "width: 23%; float: left; border: 2px solid #303030; border-radius: 5px; padding: 15px; background-color: #303030");
+bottomSection.setAttribute("style", "width: 96.5%; float: left; margin-right: 20px; border: 2px solid #303030; border-radius: 5px; padding: 15px; background-color: #303030");
 
 
 
@@ -63,67 +61,50 @@ clearDivButton.classList.add("resetButton");
 clearDivButton.setAttribute("style", "height: 3.8%; float: left; border: 2px solid white; border-radius: 10px; padding: 6px 24px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
 clearDivButton.innerText = "Reset";
 
-clearSection.append(clearDiv, clearDivButton);
-body.appendChild(clearSection);
+bottomSection.append(clearDiv, clearDivButton);
+body.appendChild(bottomSection);
 
 
 
 // Section that shows the current color selected.
 // Title of the color selector section.
 let colorSel = document.createElement('div');
-colorSel.setAttribute("style", "height: 3%; text-align: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin: -5px 0px 5px 0px");
+colorSel.classList.add("colorSelected");
+colorSel.setAttribute("style", "height: 5%; text-align: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin: -5px 0px 5px 0px; float: left");
 colorSel.innerText = "Color Selected:";
-
 // Actual color selected.
 let colorSelColor = document.createElement('div');
-colorSelColor.setAttribute("style", "width: 7%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin-right: 5px");
-
+colorSelColor.setAttribute("style", "width: 7%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin-right: 5px; float: left");
 // Name of actual color selected.
 let colorSelColorName = document.createElement('div');
-colorSelColorName.setAttribute("style", "width: 80%; height: 3.5%; float: left; color: white; padding: 3px; font-size: 20px; font-family: Gill Sans Extrabold");
+colorSelColorName.setAttribute("style", "width: 7%; height: 3.5%; float: left; color: white; padding: 3px; font-size: 20px; font-family: Gill Sans Extrabold; float: left");
 
-colSelSection.append(colorSel, colorSelColor, colorSelColorName);
-body.appendChild(colSelSection);
-
-
-
-// Logic for mousedown and mouseup to update Color Selected div and board.
-let isDown = true;
-
-function unclickColor() {
-  isDown = true;
-}
-rightSection.addEventListener('mousedown', unclickColor);
-leftSection.addEventListener('mousedown', unclickColor);
-
-function clickColor() {
-  isDown = false;
-}
-rightSection.addEventListener('mouseup', clickColor);
-leftSection.addEventListener('mouseup', clickColor);
+bottomSection.append(colorSel, colorSelColor, colorSelColorName);
+body.appendChild(bottomSection);
 
 
 
-// When color is selected from color pallet, update Color Selected div with
-// color and name.
-function mouseColor() {
-  if (event.target === rightSection) {
-    // No action when user hovers between pixels.
-  } else if (isDown) {
-    colorSelColor.style.backgroundColor = event.target.style.backgroundColor;
-    colorSelColorName.innerText = event.target.style.backgroundColor;
-  }
-}
-rightSection.addEventListener('mouseover', mouseColor);
+let colorPrev = document.createElement('div');
+colorPrev.classList.add("colorPrev");
+colorPrev.setAttribute("style", "height: 5%; text-align: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin: -5px 0px 5px 0px; float: left");
+colorPrev.innerText = "Color Preview:";
+// Hover color.
+let colorSelColorHover = document.createElement('div');
+colorSelColorHover.setAttribute("style", "width: 7%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin-right: 5px; float: left");
+// Name of hover color.
+let colorSelColorNameHover = document.createElement('div');
+colorSelColorNameHover.setAttribute("style", "width: 7%; height: 3.5%; float: left; color: white; padding: 3px; font-size: 20px; font-family: Gill Sans Extrabold; float: left");
+
+bottomSection.append(colorPrev, colorSelColorHover, colorSelColorNameHover);
+body.appendChild(bottomSection);
 
 
 
-// When pixel is selected on the board, update the selected pixel on the
-// board with the selected color.
+// Paint on the board with the color selected.
 function leftColor() {
   if (event.target === leftSection) {
     // No action when user hovers between pixels.
-  } else if (isDown) {
+  } else {
      event.target.style.backgroundColor = colorSelColor.style.backgroundColor;
   }
 }
@@ -132,9 +113,48 @@ leftSection.addEventListener('mouseover', leftColor);
 
 
 
-// When reset button is clicked, clear colors from board.
-function resetButton() {
-  boardDiv.style.backgroundColor = "white";
+// -----------------------------
+
+
+
+// Color selected.
+function currentColorHolder() {
+  if (event.target === rightSection) {
+    // No action when user hovers between pixels.
+  } else {
+  colorSelColor.style.backgroundColor = event.target.style.backgroundColor;
+  colorSelColorName.innerText = event.target.style.backgroundColor;
+  }
 }
 
+rightSection.addEventListener('click', currentColorHolder);
+
+
+
+// Color preview.
+function mouseColorHover() {
+  if (event.target === rightSection) {
+    // No action when user hovers between pixels.
+  } else {
+    colorSelColorHover.style.backgroundColor = event.target.style.backgroundColor;
+    colorSelColorNameHover.innerText = event.target.style.backgroundColor;
+  }
+}
+rightSection.addEventListener('mouseover', mouseColorHover);
+
+
+
+// When reset button is clicked, clear colors from board.
+function resetButton() {
+  // let pixel = document.getElementsByClassName('boardDiv');
+  // Array.from(pixel).forEach(function(pixel) {
+  //   boardDiv.style.backgroundColor = "white";
+  // })
+
+  for (var i = 0; i < boardDiv.length; i++) {
+    boardDiv[i].style.backgroundColor = "white";
+  }
+}
+
+// let clearButton = document.getElementsByClassName('clearDivButton');
 clearDivButton.addEventListener('click', resetButton);
