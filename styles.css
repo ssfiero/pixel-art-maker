@@ -1,4 +1,9 @@
 .resetButton:hover {
-  background-color: grey;
-  cursor: pointer;
+  background-color: Turquoise;
+  cursor: default;
+}
+
+.eraserButton:hover {
+  background-color: PaleVioletRed;
+  cursor: default;
 }

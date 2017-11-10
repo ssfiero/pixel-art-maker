@@ -9,6 +9,7 @@ let title = document.createElement('div');
 let leftSection = document.createElement('section');
 let rightSection = document.createElement('section');
 let bottomSection = document.createElement('section');
+bottomSection.classList.add("bottomSection");
 
 
 
@@ -27,9 +28,10 @@ body.appendChild(title);
 
 
 
-// Main board on left side of screen.
+// Main board to draw on left side of screen.
 for (let i = 0; i < 4182; i++) {
   let boardDiv = document.createElement('div')
+  boardDiv.classList.add("boardDiv");
 
   boardDiv.setAttribute("style", "width: 1%; height: 1%; float: left; background-color: white; margin: 1px");
 
@@ -51,14 +53,14 @@ for (let i = 0; i < 147; i++) {
 
 
 
-// Section for the clear button.
+// Section for the reset button.
 let clearDiv = document.createElement('div');
-clearDiv.setAttribute("style", "height: 5%; padding: 9px; float: left; margin-right: 5px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
+clearDiv.setAttribute("style", "height: 5%; padding: 9px; float: left; margin-right: 2px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
 clearDiv.innerText = "Clear Board:";
 
 let clearDivButton = document.createElement('div');
 clearDivButton.classList.add("resetButton");
-clearDivButton.setAttribute("style", "height: 3.8%; float: left; border: 2px solid white; border-radius: 10px; padding: 6px 24px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
+clearDivButton.setAttribute("style", "height: 3.8%; float: left; border: 2px solid white; border-radius: 10px; padding: 6px 24px; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin-right: 15px");
 clearDivButton.innerText = "Reset";
 
 bottomSection.append(clearDiv, clearDivButton);
@@ -66,58 +68,72 @@ body.appendChild(bottomSection);
 
 
 
+// Section for the eraser.
+let eraserDiv = document.createElement('div');
+eraserDiv.setAttribute("style", "height: 5%; padding: 9px; float: left; margin-right: 2px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
+eraserDiv.innerText = "Eraser:";
+
+let eraserDivButton = document.createElement('div');
+eraserDivButton.classList.add("eraserButton");
+eraserDivButton.setAttribute("style", "height: 3.8%; float: left; border: 2px solid white; border-radius: 10px; padding: 6px 24px; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin-right: 15px");
+eraserDivButton.innerText = "Eraser";
+
+bottomSection.append(eraserDiv, eraserDivButton);
+body.appendChild(bottomSection);
+
+
+
 // Section that shows the current color selected.
-// Title of the color selector section.
 let colorSel = document.createElement('div');
 colorSel.classList.add("colorSelected");
-colorSel.setAttribute("style", "height: 5%; text-align: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin: -5px 0px 5px 0px; float: left");
+colorSel.setAttribute("style", "height: 5%; padding: 9px; float: left; margin-right: 2px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
 colorSel.innerText = "Color Selected:";
 // Actual color selected.
 let colorSelColor = document.createElement('div');
-colorSelColor.setAttribute("style", "width: 7%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin-right: 5px; float: left");
+colorSelColor.setAttribute("style", "width: 6%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin: 8px 2px 0px 0px; float: left");
 // Name of actual color selected.
 let colorSelColorName = document.createElement('div');
-colorSelColorName.setAttribute("style", "width: 7%; height: 3.5%; float: left; color: white; padding: 3px; font-size: 20px; font-family: Gill Sans Extrabold; float: left");
+colorSelColorName.setAttribute("style", "height: 5%; padding: 9px; float: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin-right: 15px");
 
 bottomSection.append(colorSel, colorSelColor, colorSelColorName);
 body.appendChild(bottomSection);
 
 
 
+// Section that shows the color preview.
 let colorPrev = document.createElement('div');
 colorPrev.classList.add("colorPrev");
-colorPrev.setAttribute("style", "height: 5%; text-align: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin: -5px 0px 5px 0px; float: left");
+colorPrev.setAttribute("style", "height: 5%; padding: 9px; float: left; margin-right: 2px; color: white; font-size: 20px; font-family: Gill Sans Extrabold");
 colorPrev.innerText = "Color Preview:";
 // Hover color.
 let colorSelColorHover = document.createElement('div');
-colorSelColorHover.setAttribute("style", "width: 7%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin-right: 5px; float: left");
+colorSelColorHover.setAttribute("style", "width: 6%; height: 3.5%; border: 1px solid #303030; border-radius: 15px; float: left; margin: 8px 2px 0px 0px; float: left");
 // Name of hover color.
 let colorSelColorNameHover = document.createElement('div');
-colorSelColorNameHover.setAttribute("style", "width: 7%; height: 3.5%; float: left; color: white; padding: 3px; font-size: 20px; font-family: Gill Sans Extrabold; float: left");
+colorSelColorNameHover.setAttribute("style", "height: 5%; padding: 9px; float: left; color: white; font-size: 20px; font-family: Gill Sans Extrabold; margin-right: 15px");
 
 bottomSection.append(colorPrev, colorSelColorHover, colorSelColorNameHover);
 body.appendChild(bottomSection);
 
 
 
-// Paint on the board with the color selected.
-function leftColor() {
-  if (event.target === leftSection) {
+// ------------------------------------------------------------------------
+// Functions below involve selecting a color and painting.
+// Step 0 - Color preview.
+function mouseColorHover() {
+  if (event.target === rightSection) {
     // No action when user hovers between pixels.
   } else {
-     event.target.style.backgroundColor = colorSelColor.style.backgroundColor;
+    colorSelColorHover.style.backgroundColor = event.target.style.backgroundColor;
+    colorSelColorNameHover.innerText = event.target.style.backgroundColor;
   }
 }
 
-leftSection.addEventListener('mouseover', leftColor);
+rightSection.addEventListener('mouseover', mouseColorHover);
 
 
 
-// -----------------------------
-
-
-
-// Color selected.
+// Step 1 - Color selected.
 function currentColorHolder() {
   if (event.target === rightSection) {
     // No action when user hovers between pixels.
@@ -131,30 +147,79 @@ rightSection.addEventListener('click', currentColorHolder);
 
 
 
-// Color preview.
-function mouseColorHover() {
-  if (event.target === rightSection) {
+// Step 2 - Paint on the board with the color selected.
+function leftColor() {
+  if (event.target === leftSection) {
     // No action when user hovers between pixels.
   } else {
-    colorSelColorHover.style.backgroundColor = event.target.style.backgroundColor;
-    colorSelColorNameHover.innerText = event.target.style.backgroundColor;
+    event.target.style.backgroundColor = colorSelColor.style.backgroundColor;
   }
 }
-rightSection.addEventListener('mouseover', mouseColorHover);
+
+leftSection.addEventListener('mouseover', leftColor);
 
 
 
+// Step 3 - Stop painting when clicked. Event listener removed.
+function noMoreColor() {
+  leftSection.removeEventListener('mouseover', leftColor);
+}
+
+leftSection.addEventListener('click', noMoreColor);
+
+
+
+// Step 4 - Start painting again when a new color is selected.
+// Event listener added back.
+function colorAgain() {
+  leftSection.addEventListener('mouseover', leftColor);
+}
+
+rightSection.addEventListener('mouseover', colorAgain);
+
+
+
+// ------------------------------------------------------------------------
+// Functions below involve erasing the board.
+// When eraser button is clicked, color is set to white to erase board
+// with a brush functionality.
+function eraseColorClick() {
+  if (event.target === leftSection) {
+    // No action when user hovers between pixels.
+  } else {
+    function eraseColor() {
+      if (event.target === leftSection) {
+        // No action when user hovers between pixels.
+      } else {
+        event.target.style.backgroundColor = "white";
+      }
+    }
+
+    leftSection.addEventListener('mouseover', eraseColor);
+  }
+}
+
+leftSection.addEventListener('click', eraseColorClick);
+
+
+
+// ------------------------------------------------------------------------
 // When reset button is clicked, clear colors from board.
 function resetButton() {
-  // let pixel = document.getElementsByClassName('boardDiv');
-  // Array.from(pixel).forEach(function(pixel) {
-  //   boardDiv.style.backgroundColor = "white";
-  // })
+  let pixel = document.getElementsByClassName('boardDiv');
 
-  for (var i = 0; i < boardDiv.length; i++) {
-    boardDiv[i].style.backgroundColor = "white";
+  for (var i = 0; i < 4182; i++) {
+    pixel[i].style.backgroundColor = "white";
   }
+
+  leftSection.removeEventListener('mouseover', function() {
+
+  });
 }
 
-// let clearButton = document.getElementsByClassName('clearDivButton');
 clearDivButton.addEventListener('click', resetButton);
+
+
+// Function is called to remove event listener from board, and not allowing
+// the board to be set with same color as container.
+noMoreColor();
