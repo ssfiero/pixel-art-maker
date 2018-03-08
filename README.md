@@ -16,3 +16,11 @@ Github repo: https://github.com/ssfiero/pixel-art-maker
 
 Project details and instructions can be found on this README here:
 https://github.com/ssfiero/pixel-art-maker/blob/master/Instructions-README.md
+
+## Application Screenshots
+
+Start
+![Alt](pixelartbefore.png)
+
+Draw!
+![Alt](pixelart.png)
